@@ -25,6 +25,14 @@ routerFiles.forEach(v => {
         app.use(server.version +'/' + name, require('./routers/' + name))
     }
 })
+// 统一处理网站中所有的错误（网站中一有错误就会跳到这里来执行）
+app.use((err, req, res, next) => {
+    res.json({
+        'ok': 0,
+        'error': err || '服务器错误'
+    })
+})
+
 // 测试内容
 app.get('/test',(req,res)=>{
     res.send('<h1 style="text-align:center">服务器开启中...</h1>')
