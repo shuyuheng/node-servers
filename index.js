@@ -4,7 +4,12 @@ const express = require('express')
 const { server } = require('./config')
 // 创建服务
 const app = express()
-
+// 启用cors跨域
+app.use(require('cors')())
+// 0.配置body-parser
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json())  // 用于接收axios 请求数据
 const fs = require('fs')
 // 1. 直接读取 routers 目录下所有的文件
 const routerFiles = fs.readdirSync('./routers')
@@ -16,13 +21,13 @@ routerFiles.forEach(v => {
         const routerFiles1 = fs.readdirSync('./routers/' + v)
         routerFiles1.forEach(v1 => {
             let name = v1.replace('.js', '')
-            app.use(server.version +'/' + v + '/' + name, require('./routers/' + v + '/' + name))
+            app.use(server.version || '' +'/' + v + '/' + name, require('./routers/' + v + '/' + name))
         })
     } else {
         // 如果是文件就直接加载
         // 提取文件（去掉.js)
         let name = v.replace('.js', '')
-        app.use(server.version +'/' + name, require('./routers/' + name))
+        app.use(server.version || ''  +'/' + name, require('./routers/' + name))
     }
 })
 // 统一处理网站中所有的错误（网站中一有错误就会跳到这里来执行）

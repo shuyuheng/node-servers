@@ -14,7 +14,6 @@ module.exports = {
         ip:'127.0.0.1',
         port:'7788',
         version:'/v1/api',
-
     }
     // 等 ..... 需要的对象配置都写在这里
 }
